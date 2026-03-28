@@ -1,0 +1,30 @@
+
+
+networks:
+  nexus-network:
+    driver: bridge
+
+services:
+  nexus-db:
+    image: postgres:15
+    container_name: nexus-platform-db
+    restart: always
+    environment:
+      POSTGRES_DB: nexus_platform
+      POSTGRES_USER: nexus_admin
+      POSTGRES_PASSWORD: Nexus@2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - nexus-db-data:/var/lib/postgresql/data
+    networks:
+      - nexus-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus_admin -d nexus_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  nexus-db-data:
+    driver: local

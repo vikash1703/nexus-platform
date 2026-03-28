@@ -1,0 +1,41 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: nexus-platform
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nexus_platform}
+    username: ${DB_USERNAME:nexus_admin}
+    password: ${DB_PASSWORD:Nexus@2024}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+jwt:
+  secret: nexus-platform-super-secret-key-2024-must-be-at-least-256-bits
+  expiration: 86400000
+
+logging:
+  level:
+    io.nexus.platform: DEBUG
+    org.hibernate.SQL: DEBUG
